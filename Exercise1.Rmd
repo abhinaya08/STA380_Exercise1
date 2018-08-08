@@ -1,6 +1,6 @@
 ---
 title: "STA380_Exercise1"
-author: "Abhinaya A"
+author: "Abhinaya, Jui, Sherlley"
 date: "August 7, 2018"
 output: word_document
 ---
