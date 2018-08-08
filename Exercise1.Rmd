@@ -5,17 +5,17 @@ date: "August 7, 2018"
 output: word_document
 ---
 
-```{r setup, include=FALSE,echo=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
 ```
 
-## Question 1
+# Question 1
 
 ```{r, message = FALSE}
 
 ```
 
-## Question 2
+# Question 2
 
 You can also embed plots, for example:
 
@@ -23,11 +23,53 @@ You can also embed plots, for example:
 
 ```
 
-## Question 3
+# Question 3
 
-### Bootstrapping
+## Bootstrapping
 
 ```{r, message = FALSE}
+library(mosaic)
+library(quantmod)
+library(foreach)
+
+mystocks = c("SPY", "TLT", "LQD", "EEM", "VNQ")
+myprices = getSymbols(mystocks, from = "2007-01-01")
+
+for(ticker in mystocks) {
+  expr = paste0(ticker, "a = adjustOHLC(", ticker, ")")
+  eval(parse(text=expr))
+  }
+
+
+# Combine all the returns in a matrix
+all_returns = cbind(	ClCl(SPYa),
+                     ClCl(TLTa),
+                     ClCl(LQDa),
+                     ClCl(EEMa),
+                     ClCl(VNQa))
+```
+
+all_returns has the closing returns for the 5 stocks we want to invest in. To determine which out of these is risky and stable, we will plot their reurns for the last 2 years
+
+```{r echo=TRUE, message=FALSE, warning=FALSE, paged.print=FALSE}
+#colMeans(all_returns[all_returns[,1]>"2017-01-01"])
+
+plot(all_returns[,1],main = names(all_returns)[1])
+plot(all_returns[,2],main = names(all_returns)[2])
+plot(all_returns[,3],main = names(all_returns)[3])
+plot(all_returns[,4],main = names(all_returns)[4])
+plot(all_returns[,5],main = names(all_returns)[5])
+
+
+```
+
+```{r}
+all_returns = as.matrix(na.omit(all_returns))
+
+# This simulates a random day
+return.today = resample(all_returns, 1, orig.ids=FALSE)
+
+
 
 
 ```
