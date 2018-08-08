@@ -33,7 +33,7 @@ You can also embed plots, for example:
 
 First, we select the stocks that are of interest to us from the quantmod package
 
-```{r message=FALSE}
+```{r Boots_initialization, message=FALSE}
 library(mosaic)
 library(quantmod)
 library(foreach)
@@ -58,7 +58,7 @@ head(all_returns)
 
 As we can see above, all_returns has the closing returns for the 5 stocks we want to invest in. To determine which out of these are risky and stable, we will plot their returns and check their trend
 
-```{r echo=TRUE, message=FALSE, warning=FALSE, paged.print=FALSE}
+```{r Boots_plots, message=FALSE, warning=FALSE, paged.print=FALSE}
 #plotting since 2007 and since 2017 to compare
 
 chartSeries(SPYa,TA='addBBands();
@@ -102,7 +102,9 @@ From the charts we can conclude that Emerging markets and Real estate exchange-t
 
 ### (a) Simulating for even split
 
-```{r}
+```{r Boots_evensim}
+set.seed(12345)
+
 all_returns = as.matrix(na.omit(all_returns))
 
 n_days = 20
@@ -122,13 +124,6 @@ sim1 = foreach(i=1:50000, .combine='rbind') %do% {
   wealthtracker
 }
 
-
-hist(sim1[,n_days], 25)
-
-# Profit/loss
-mean(sim1[,n_days])
-hist(sim1[,n_days]- initial_wealth, breaks=30)
-
 # Calculate 5% value at risk
 quantile(sim1[,n_days], 0.05) - initial_wealth
 
@@ -136,7 +131,7 @@ quantile(sim1[,n_days], 0.05) - initial_wealth
 
 ### (b) Simulating for safe split
 
-```{r}
+```{r Boots_safesim}
 all_returns = as.matrix(na.omit(all_returns))
 
 n_days = 20
@@ -156,13 +151,6 @@ sim1 = foreach(i=1:50000, .combine='rbind') %do% {
   wealthtracker
 }
 
-
-hist(sim1[,n_days], 25)
-
-# Profit/loss
-mean(sim1[,n_days])
-hist(sim1[,n_days]- initial_wealth, breaks=30)
-
 # Calculate 5% value at risk
 quantile(sim1[,n_days], 0.05) - initial_wealth
 
@@ -170,7 +158,7 @@ quantile(sim1[,n_days], 0.05) - initial_wealth
 
 ### (b) Simulating for aggressive split
 
-```{r}
+```{r Boots_aggsim}
 all_returns = as.matrix(na.omit(all_returns))
 
 n_days = 20
@@ -189,13 +177,6 @@ sim1 = foreach(i=1:50000, .combine='rbind') %do% {
   }
   wealthtracker
 }
-
-head(sim1)
-hist(sim1[,n_days], 25)
-
-# Profit/loss
-mean(sim1[,n_days])
-hist(sim1[,n_days]- initial_wealth, breaks=30)
 
 # Calculate 5% value at risk
 quantile(sim1[,n_days], 0.05) - initial_wealth
