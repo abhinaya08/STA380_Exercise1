@@ -1,0 +1,26 @@
+---
+title: "STA380_Exercise1"
+author: "Abhinaya A"
+date: "August 7, 2018"
+output: word_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Question 1
+
+```{r cars}
+summary(cars)
+```
+
+## Question 2
+
+You can also embed plots, for example:
+
+```{r pressure, echo=FALSE}
+plot(pressure)
+```
+
+## Question 3
