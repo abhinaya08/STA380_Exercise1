@@ -6,7 +6,11 @@ output: word_document
 ---
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = FALSE)
+knitr::opts_chunk$set(
+	echo = TRUE,
+	message = FALSE,
+	warning = FALSE
+)
 ```
 
 # Question 1
@@ -27,13 +31,15 @@ You can also embed plots, for example:
 
 ## Bootstrapping
 
-```{r, message = FALSE}
+First, we select the stocks that are of interest to us from the quantmod package
+
+```{r message=FALSE}
 library(mosaic)
 library(quantmod)
 library(foreach)
 
 mystocks = c("SPY", "TLT", "LQD", "EEM", "VNQ")
-myprices = getSymbols(mystocks, from = "2007-01-01")
+myprices = getSymbols(mystocks)
 
 for(ticker in mystocks) {
   expr = paste0(ticker, "a = adjustOHLC(", ticker, ")")
@@ -42,38 +48,159 @@ for(ticker in mystocks) {
 
 
 # Combine all the returns in a matrix
-all_returns = cbind(	ClCl(SPYa),
-                     ClCl(TLTa),
-                     ClCl(LQDa),
-                     ClCl(EEMa),
-                     ClCl(VNQa))
+all_returns = cbind(ClCl(SPYa),
+                    ClCl(TLTa),
+                    ClCl(LQDa),
+                    ClCl(EEMa),
+                    ClCl(VNQa))
+head(all_returns)
 ```
 
-all_returns has the closing returns for the 5 stocks we want to invest in. To determine which out of these is risky and stable, we will plot their reurns for the last 2 years
+As we can see above, all_returns has the closing returns for the 5 stocks we want to invest in. To determine which out of these are risky and stable, we will plot their returns and check their trend
 
 ```{r echo=TRUE, message=FALSE, warning=FALSE, paged.print=FALSE}
-#colMeans(all_returns[all_returns[,1]>"2017-01-01"])
+#plotting since 2007 and since 2017 to compare
 
-plot(all_returns[,1],main = names(all_returns)[1])
-plot(all_returns[,2],main = names(all_returns)[2])
-plot(all_returns[,3],main = names(all_returns)[3])
-plot(all_returns[,4],main = names(all_returns)[4])
-plot(all_returns[,5],main = names(all_returns)[5])
+chartSeries(SPYa,TA='addBBands();
+                    addBBands(draw="p");
+                    addVo()', 
+                subset='2017-01::2018',
+                theme="white"
+                )
+
+chartSeries(TLTa,TA='addBBands();
+                    addBBands(draw="p");
+                    addVo()', 
+                subset='2017-01::2018',
+                theme="white"
+                )
+
+chartSeries(LQDa,TA='addBBands();
+                    addBBands(draw="p");
+                    addVo()', 
+                subset='2017-01::2018',
+                theme="white"
+                )
 
 
+chartSeries(EEMa,TA='addBBands();
+                    addBBands(draw="p");
+                    addVo()', 
+                subset='2017-01::2018',
+                theme="white"
+                ) 
+
+chartSeries(VNQa,TA='addBBands();
+                    addBBands(draw="p");
+                    addVo()', 
+                subset='2017-01::2018',
+                theme="white"
+                )
 ```
+
+From the charts we can conclude that Emerging markets and Real estate exchange-traded funds have been rather unstable with higher returns
+
+### (a) Simulating for even split
 
 ```{r}
 all_returns = as.matrix(na.omit(all_returns))
 
-# This simulates a random day
-return.today = resample(all_returns, 1, orig.ids=FALSE)
+n_days = 20
+initial_wealth = 100000
+sim1 = foreach(i=1:50000, .combine='rbind') %do% {
+  total_wealth = initial_wealth
+  weights = c(0.2, 0.2, 0.2, 0.2, 0.2)
+  holdings = weights * total_wealth
+  wealthtracker = rep(0, n_days)
+  for(today in 1:n_days) {
+    return.today = resample(all_returns, 1, orig.ids=FALSE)
+    holdings = holdings + holdings*return.today
+    total_wealth = sum(holdings)
+    wealthtracker[today] = total_wealth
+    holdings = total_wealth * weights
+  }
+  wealthtracker
+}
 
 
+hist(sim1[,n_days], 25)
 
+# Profit/loss
+mean(sim1[,n_days])
+hist(sim1[,n_days]- initial_wealth, breaks=30)
+
+# Calculate 5% value at risk
+quantile(sim1[,n_days], 0.05) - initial_wealth
 
 ```
 
+### (b) Simulating for safe split
+
+```{r}
+all_returns = as.matrix(na.omit(all_returns))
+
+n_days = 20
+initial_wealth = 100000
+sim1 = foreach(i=1:50000, .combine='rbind') %do% {
+  total_wealth = initial_wealth
+  weights = c(1/3, 1/3, 1/3, 0,0)
+  holdings = weights * total_wealth
+  wealthtracker = rep(0, n_days)
+  for(today in 1:n_days) {
+    return.today = resample(all_returns, 1, orig.ids=FALSE)
+    holdings = holdings + holdings*return.today
+    total_wealth = sum(holdings)
+    wealthtracker[today] = total_wealth
+    holdings = total_wealth * weights
+  }
+  wealthtracker
+}
+
+
+hist(sim1[,n_days], 25)
+
+# Profit/loss
+mean(sim1[,n_days])
+hist(sim1[,n_days]- initial_wealth, breaks=30)
+
+# Calculate 5% value at risk
+quantile(sim1[,n_days], 0.05) - initial_wealth
+
+```
+
+### (b) Simulating for aggressive split
+
+```{r}
+all_returns = as.matrix(na.omit(all_returns))
+
+n_days = 20
+initial_wealth = 100000
+sim1 = foreach(i=1:50000, .combine='rbind') %do% {
+  total_wealth = initial_wealth
+  weights = c(0, 0, 0, 0.5, 0.5)
+  holdings = weights * total_wealth
+  wealthtracker = rep(0, n_days)
+  for(today in 1:n_days) {
+    return.today = resample(all_returns, 1, orig.ids=FALSE)
+    holdings = holdings + holdings*return.today
+    total_wealth = sum(holdings)
+    wealthtracker[today] = total_wealth
+    holdings = total_wealth * weights
+  }
+  wealthtracker
+}
+
+head(sim1)
+hist(sim1[,n_days], 25)
+
+# Profit/loss
+mean(sim1[,n_days])
+hist(sim1[,n_days]- initial_wealth, breaks=30)
+
+# Calculate 5% value at risk
+quantile(sim1[,n_days], 0.05) - initial_wealth
+
+```
 ## Question 4
 
 ```{r, message = FALSE}
