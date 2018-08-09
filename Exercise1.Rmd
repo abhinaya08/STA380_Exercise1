@@ -1,6 +1,6 @@
 ---
 title: "STA380_Exercise1"
-author: "Abhinaya, Jui, Sherlley"
+author: "Abhinaya, Jui, Sherlley, Teeru"
 date: "August 7, 2018"
 output: word_document
 ---
@@ -15,9 +15,10 @@ knitr::opts_chunk$set(
 
 # Question 1
 
-```{r, message = FALSE}
+![optional caption text](parta_solution.jpg)
 
-```
+![optional caption text](figures/img.png)
+
 
 # Question 2
 
@@ -60,25 +61,22 @@ As we can see above, all_returns has the closing returns for the 5 stocks we wan
 
 ```{r Boots_plots, message=FALSE, warning=FALSE, paged.print=FALSE}
 #plotting since 2007 and since 2017 to compare
-
+#c
 chartSeries(SPYa,TA='addBBands();
                     addBBands(draw="p");
                     addVo()', 
-                subset='2017-01::2018',
                 theme="white"
                 )
 
 chartSeries(TLTa,TA='addBBands();
                     addBBands(draw="p");
                     addVo()', 
-                subset='2017-01::2018',
                 theme="white"
                 )
 
 chartSeries(LQDa,TA='addBBands();
                     addBBands(draw="p");
                     addVo()', 
-                subset='2017-01::2018',
                 theme="white"
                 )
 
@@ -86,14 +84,12 @@ chartSeries(LQDa,TA='addBBands();
 chartSeries(EEMa,TA='addBBands();
                     addBBands(draw="p");
                     addVo()', 
-                subset='2017-01::2018',
                 theme="white"
                 ) 
 
 chartSeries(VNQa,TA='addBBands();
                     addBBands(draw="p");
                     addVo()', 
-                subset='2017-01::2018',
                 theme="white"
                 )
 ```
@@ -184,6 +180,122 @@ quantile(sim1[,n_days], 0.05) - initial_wealth
 ```
 ## Question 4
 
+Identify the market segment that tweets about NutrientH2O
+
+First we are analyzing the dataset and looking at the various distributions and correlations
 ```{r, message = FALSE}
 
+df <- read.csv("social_marketing.csv")
+names(df)
+head(df)
+summary(df)
+
 ```
+We can see from the data that most of the festures have outliers. But there are no NA's.
+
+### Which is the most talked about category?
+
+```{r}
+#avg categorization for every category
+sort(colMeans(df[-1]),decreasing = TRUE)
+
+#Distribution of tweets into categories
+x = sort((colSums(df[-1])/sum(colSums(df[,-1])))*100,decreasing = TRUE)
+barplot(x)
+```
+As expected, most of the tweets are chatter, followed by photo_sharing and health_nutrition. Maybe by cleaning the dataset and excluding the chatter, photo_sharing, spam and adult taggings, the popular categories would change
+
+Also to note that most of the tweets are categorized into photo_sharing (6%) and health_nutrition (6%)
+```{r}
+df2 <- cbind(df, total = rowSums(df[,-1]))
+df2[(df2$chatter + df2$spam + df2$adult) == df2$total,]
+
+```
+No turk has rated a tweet as only chatter, spam or adult. This means we can exclude these columns for our segmentation exercise
+
+```{r}
+#excluding chatter,photo_sharing, spam, adult and turks for segmentation
+exclude <- c("X","chatter","uncategorized","spam","adult","photo_sharing")
+clean_df <- df[,!names(df) %in% exclude]
+colMeans(clean_df)
+
+#normalizing the data for creating better clusters, since there are so many outliers
+#normalize <- function(x){(x-min(x))/(max(x)-min(x))}
+
+#creating fdf = final dataframe
+#fdf <- apply(clean_df,2,FUN=normalize) 
+fdf <-  scale(clean_df,center = TRUE, scale = TRUE)
+head(fdf)
+```
+
+
+Running the cluster algorithms to identify market segments
+
+```{r Cluster algos}
+library(ggplot2)
+library(LICORS)  # for kmeans++
+library(foreach)
+library(mosaic)
+library(plyr)
+
+#cls_gap <- clusGap(fdf,FUN = kmeans, nstart = 20, K.max = 8, B = 10)
+#plot(cls_gap)
+#, main = "clusGap(<iid_rnorm_p=3>)  ==> k = 1  cluster is optimal")
+
+# Run k-means with 6 clusters and 25 starts
+clust1 = kmeans(fdf, 5, nstart=100)
+clust1$betweenss / clust1$totss #22% error
+res <- t(clust1$centers)
+res[order(-res[,1]),1]
+res[order(-res[,2]),2]
+res[order(-res[,3]),3]
+res[order(-res[,4]),4]
+res[order(-res[,5]),5]
+qplot(health_nutrition, personal_fitness, data=clean_df, color=factor(clust1$cluster))
+qplot(religion, politics, data=clean_df, color=factor(clust1$cluster))
+qplot(current_events, shopping, data=clean_df, color=factor(clust1$cluster))
+
+qplot(food, parenting, data=clean_df, color=factor(clust1$cluster))
+
+# Using kmeans++ initialization
+#clust2 = kmeanspp(fdf, k=6, nstart=25)
+#qplot(health_nutrition, photo_sharing, data=clean_df, color=factor(clust2$cluster))
+#qplot(health_nutrition, cooking, data=clean_df, color=factor(clust2$cluster))
+#qplot(politics, cooking, data=clean_df, color=factor(clust2$cluster))
+
+
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
