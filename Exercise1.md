@@ -54,7 +54,9 @@ boxplot(Rent ~ class_a, data = green, xlab = "class_a",
         ylab = "Rent", main = "Green Data")
 ```
 
-![](Exercise1_files/figure-markdown_github/unnamed-chunk-1-2.png) Although we agree that green buildings are a worthwhile investment, we do not entirely agree with the stats guru’s analysis. First, we decided to leave outliers with the data to observe to what extent do these outliers affect the rest of our analysis. We looked at a number of variables and decided to focus on class\_a, age, leasing\_rate. From our exploratory analysis, all green buildings but one had an occupancy rate above 50%, and many buildings were less than 20 years old. And since the building will be in a great part of Austin, in a location of prime real estate, we expect the building to be of a similar standard. In addition, based on the charts above, we observe there is a difference between class\_a and non-class\_a buildings median cost of rent, which includes outliers. Combined with this and the Rent vs. green\_rating boxplot, our plots suggest that there are other significant variables that contribute to the expected rent of a building.
+![](Exercise1_files/figure-markdown_github/unnamed-chunk-1-2.png)
+
+Although we agree that green buildings are a worthwhile investment, we do not entirely agree with the stats guru’s analysis. First, we decided to leave outliers with the data to observe to what extent do these outliers affect the rest of our analysis. We looked at a number of variables and decided to focus on class\_a, age, leasing\_rate. From our exploratory analysis, all green buildings but one had an occupancy rate above 50%, and many buildings were less than 20 years old. And since the building will be in a great part of Austin, in a location of prime real estate, we expect the building to be of a similar standard. In addition, based on the charts above, we observe there is a difference between class\_a and non-class\_a buildings median cost of rent, which includes outliers. Combined with this and the Rent vs. green\_rating boxplot, our plots suggest that there are other significant variables that contribute to the expected rent of a building.
 
 #### Our Analysis: Go green or not?
 
@@ -100,11 +102,21 @@ ggplot(green_new, aes(x= green_rating,fill = class_1)) + geom_bar(position = "fi
 
 #### Best and worst case scenario
 
-We observe that the rent varies across levels of occupancy and the occupany rates for green buildings tend to higher. For this analysis we propose analyzing a best case and worst case scenario to estimate the ROI. **Best case scenario: &gt;90% occupancy rate** We consider &gt;90% occupancy rate as the best case scenario and &lt;30% occupancy rate as the worst. **Worst case scenario: 30%-60% occupancy rate** The number of green buildings below 30% occupancy rate are very old, so we consider 30%-60% occupancy rate as our worst case scenario.
+We observe that the rent varies across levels of occupancy and the occupany rates for green buildings tend to higher. For this analysis we propose analyzing a best case and worst case scenario to estimate the ROI.
+
+1.  **Best case scenario: &gt;90% occupancy rate** We consider &gt;90% occupancy rate as the best case scenario and &lt;30% occupancy rate as the worst.
+
+2.  **Worst case scenario: 30%-60% occupancy rate** The number of green buildings below 30% occupancy rate are very old, so we consider 30%-60% occupancy rate as our worst case scenario.
 
 #### Test environment setup
 
-To compare the variation of rent across types of buildings, we will consider the buildings that are: 1. Classified as class a 2. Not older than 20 years 3. Occupied more than 90% or between 30%-60% This ensures we are looking at similar buildings for comparison.
+To compare the variation of rent across types of buildings, we will consider the buildings that are:
+
+1.  Classified as **class a**
+2.  Not older than **20 years**
+3.  Occupied **&gt;=90%** or **between 30%-60%**
+
+This ensures we are looking at similar buildings for comparison.
 
 ``` r
 green_final = green_new %>%
@@ -112,12 +124,12 @@ green_final = green_new %>%
   filter(class_a ==1) %>%
   filter(age_bucket == "0-9"|age_bucket == "10-20")
 
-ggplot(green_final,aes(green_rating, fill = rent_bucket)) +  geom_bar(position = "stack") + facet_grid(age_bucket ~ leasing_bucket, scales = "free") + scale_x_discrete("Rating of green building", labels = c("0" ="No","1" = "Yes")) +  labs(title = "Variation in green buildings across rent and occupancy rate", y ="Count", fill = "Rent buckets") 
+ggplot(green_final,aes(green_rating, fill = rent_bucket)) +  geom_bar(position = "stack") + facet_grid(age_bucket ~ leasing_bucket, scales = "free") + scale_x_discrete("Rating of green building", labels = c("0" ="No","1" = "Yes")) +  labs(title = "Variation in green buildings across rent and occupancy rate", y ="Number of buildings", fill = "Rent buckets") 
 ```
 
 ![](Exercise1_files/figure-markdown_github/unnamed-chunk-7-1.png)
 
-This plot shows the variation of rent across occupancy rate (on the secondary x axis) and age of building (on the secondary y axis). We can observe that the rent for green buildings is not higher and other factors than just the building been 'green' should be considered to decide if we should invest in the building.
+This plot shows the variation of rent across occupancy rate (on the secondary x axis) and age of building (on the secondary y axis). We can observe that the rent for green buildings is not higher and other factors than just the green rating shouldnt be considered to decide if we should invest in the building.
 
 #### Conclusion
 
@@ -210,14 +222,14 @@ apply(all_returns,MARGIN = 2,sd,na.rm=T)
 ```
 
     ##   ClCl.SPYa   ClCl.TLTa   ClCl.LQDa   ClCl.EEMa   ClCl.VNQa 
-    ## 0.012448436 0.009156927 0.005219542 0.040240709 0.021159767
+    ## 0.012448436 0.009156927 0.005219542 0.040240709 0.021156843
 
 ``` r
 apply(all_returns,MARGIN = 2,mean,na.rm=T)
 ```
 
     ##    ClCl.SPYa    ClCl.TLTa    ClCl.LQDa    ClCl.EEMa    ClCl.VNQa 
-    ## 0.0003983176 0.0002737537 0.0002067942 0.0009971055 0.0004095163
+    ## 0.0003983176 0.0002737537 0.0002067942 0.0009971055 0.0004147192
 
 From the charts,SD and mean of returns over the last 10 years we can conclude that Emerging markets and Real estate exchange-traded funds have been rather unstable with higher returns (risky) while the others are stable.
 
