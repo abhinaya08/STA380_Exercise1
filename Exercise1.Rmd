@@ -30,7 +30,34 @@ The big problem would be for those who test positive of the disease. Approximate
 
 
 ```{r, message = FALSE}
+library(mosaic)
+library(ggplot2)
+library(dplyr)
 
+green = read.csv("greenbuildings.csv")
+
+# Subset to remove leasing outliers
+wp_outliers = green %>% 
+  filter(leasing_rate<10)
+
+par(mfrow=c(1, 2))
+
+#box plot for rent vs green_rating
+boxplot(Rent ~ green_rating, data = green, xlab = "green_rating",
+        ylab = "Rent", main = "Green Data")
+
+boxplot(Rent ~ green_rating, data = wo_outliers, xlab = "green_rating",
+        ylab = "Rent", main = "Green Data")
+
+#show class_a vs. rent and green_rating vs. rent
+par(mfrow=c(1, 2))
+  
+boxplot(Rent ~ green_rating, data = green, xlab = "green_rating",
+        ylab = "Rent", main = "Green Data")
+
+#box plot for rent vs green_rating
+boxplot(Rent ~ class_a, data = green, xlab = "class_a",
+        ylab = "Rent", main = "Green Data")
 ```
 
 ## Question 3
