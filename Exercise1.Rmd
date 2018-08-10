@@ -24,6 +24,7 @@ Detailed Assignment questions at: https://github.com/abhinaya08/STA380_Exercise1
 
 ![Question 1 Part B](partb_solution.jpg)
 
+The big problem would be for those who test positive of the disease. Approximately 80% of them will not have the disease. Therefore, there may have to be some retest in addition to this current test. If we were to stop at this first test calculation, this would mean many people may go under unnecessary treatment, potentially taking up resources for  others who really have the disease and need treatment.
 
 ## Question 2
 
