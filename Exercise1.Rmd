@@ -15,24 +15,26 @@ knitr::opts_chunk$set(
 Detailed Assignment questions at: https://github.com/abhinaya08/STA380_Exercise1/blob/master/exercises01_questions.md
 
 
-# Question 1
+## Question 1
 
-
+### Answer to Part A
 ![Question 1 Part A](parta_solution.jpg)
+
+### Answer to Part B
 
 ![Question 1 Part B](partb_solution.jpg)
 
 
-# Question 2
+## Question 2
 
 
 ```{r, message = FALSE}
 
 ```
 
-# Question 3
+## Question 3
 
-## Bootstrapping
+### Bootstrapping
 
 To allow the reader to make an intelligent decision to distribute his/her wealth, we will simulate the data.
 
@@ -105,7 +107,7 @@ From the charts,SD and mean of returns over the last 10 years we can conclude th
 
 ### (a) Simulating for even split
 
-```{r Boots_evensim}
+```{r Boots_evensim,cache=TRUE}
 set.seed(12345)
 
 all_returns = as.matrix(na.omit(all_returns))
@@ -133,7 +135,7 @@ initial_wealth - quantile(sim_e[,n_days], 0.05)
 
 ### (b) Simulating for safe split
 
-```{r Boots_safesim}
+```{r Boots_safesim, cache=TRUE}
 all_returns = as.matrix(na.omit(all_returns))
 
 n_days = 20
@@ -160,7 +162,7 @@ safe_split <- initial_wealth - quantile(sim_s[,n_days], 0.05)
 
 ### (b) Simulating for aggressive split
 
-```{r Boots_aggsim}
+```{r Boots_aggsim, cache=TRUE}
 all_returns = as.matrix(na.omit(all_returns))
 
 n_days = 20
@@ -201,9 +203,6 @@ We can see from the data that most of the festures have outliers. But there are 
 ### Which is the most talked about category?
 
 ```{r}
-#avg categorization for every category
-sort(colMeans(df[-1]),decreasing = TRUE)
-
 #Distribution of tweets into categories
 x = sort((colSums(df[-1])/sum(colSums(df[,-1])))*100,decreasing = TRUE)
 barplot(x, las=2, ylab = "% of total tweets", main = "Distribution of tweets into categories", col = "skyblue",cex.names = 0.75)
@@ -226,6 +225,7 @@ fdf <- apply(clean_df,2,FUN=normalize)
 #fdf <-  scale(clean_df,center = TRUE, scale = TRUE)
 ```
 
+### K-means clustering
 
 Running the cluster algorithms to identify market segments
 
@@ -251,7 +251,7 @@ table(clust1$cluster)
 ```
 
 Following lines of code is to assess the cluster means and derive the market segments:
-```{r include=FALSE}
+```{r message=FALSE, warning=FALSE, include=FALSE, paged.print=FALSE}
 res <- t(clust1$centers)
 res[order(-res[,1]),1]
 res[order(-res[,2]),2]
@@ -260,17 +260,19 @@ res[order(-res[,4]),4]
 res[order(-res[,5]),5]
 ```
 
+
+### Segmentation results from k-means
 Following are the segments we observe in the data:
-1. cluster 1: Potential opportunity - They care about shopping but need to educated on health, nutrition and our product. Probably have the lowest engagement. Suggestion: Post more educational material? 
-2. cluster 2: Outdoorsy people who care about their health, older demographic, not parents (cash cows)
-3. Cluster 3: Retired, baby boomers, empty nesters (retweet a lot?) 
-4. Cluster 4: Suburban parents 
-5. Cluster 5: Collge students. Suggestion: Target school events and hackathons to distribute product samples. Hire a sports personality to be your brand ambassaddor.
+*1. cluster 1: Potential opportunity - They care about shopping but need to educated on health, nutrition and our product. Probably have the lowest engagement. Suggestion: Post more educational material? 
+*2. cluster 2: Outdoorsy people who care about their health, older demographic, not parents (cash cows)
+*3. Cluster 3: Retired, baby boomers, empty nesters (retweet a lot?) 
+*4. Cluster 4: Suburban parents 
+*5. Cluster 5: Collge students. Suggestion: Target school events and hackathons to distribute product samples. Hire a sports personality to be your brand ambassaddor.
 
 
 The followers rarely tweet about dating. NutrientH2O should refrain from posting about that.
 
-
+### PCA exploration
 Following lines of code is to try PCA to compare to k-means
 ```{r}
 #PCA

@@ -6,20 +6,23 @@ August 7, 2018
 Detailed Assignment questions at: <https://github.com/abhinaya08/STA380_Exercise1/blob/master/exercises01_questions.md>
 
 Question 1
-==========
+----------
+
+### Answer to Part A
 
 ![Question 1 Part A](parta_solution.jpg)
+
+### Answer to Part B
 
 ![Question 1 Part B](partb_solution.jpg)
 
 Question 2
-==========
+----------
 
 Question 3
-==========
+----------
 
-Bootstrapping
--------------
+### Bootstrapping
 
 To allow the reader to make an intelligent decision to distribute his/her wealth, we will simulate the data.
 
@@ -300,30 +303,6 @@ We can see from the data that most of the festures have outliers. But there are 
 ### Which is the most talked about category?
 
 ``` r
-#avg categorization for every category
-sort(colMeans(df[-1]),decreasing = TRUE)
-```
-
-    ##          chatter    photo_sharing health_nutrition          cooking 
-    ##      4.398756661      2.696777468      2.567241817      1.998223801 
-    ##         politics    sports_fandom           travel      college_uni 
-    ##      1.788632327      1.594011672      1.585003806      1.549479827 
-    ##   current_events personal_fitness             food         shopping 
-    ##      1.526262370      1.462065466      1.397487947      1.389368181 
-    ##    online_gaming             news         religion          tv_film 
-    ##      1.208830246      1.205531591      1.095407257      1.070286729 
-    ##          fashion        parenting           family       automotive 
-    ##      0.996574473      0.921339761      0.863867039      0.829865516 
-    ##    uncategorized         outdoors           school              art 
-    ##      0.812991626      0.782669373      0.767698554      0.724816037 
-    ##           dating           beauty            music        computers 
-    ##      0.710860188      0.705150977      0.679269221      0.649073839 
-    ##   sports_playing  home_and_garden           crafts              eco 
-    ##      0.639177874      0.520680030      0.515858919      0.512306521 
-    ##         business            adult   small_business             spam 
-    ##      0.423242832      0.403324029      0.336335955      0.006470439
-
-``` r
 #Distribution of tweets into categories
 x = sort((colSums(df[-1])/sum(colSums(df[,-1])))*100,decreasing = TRUE)
 barplot(x, las=2, ylab = "% of total tweets", main = "Distribution of tweets into categories", col = "skyblue",cex.names = 0.75)
@@ -352,6 +331,8 @@ fdf <- apply(clean_df,2,FUN=normalize)
 #fdf <-  scale(clean_df,center = TRUE, scale = TRUE)
 ```
 
+### K-means clustering
+
 Running the cluster algorithms to identify market segments
 
 ``` r
@@ -359,7 +340,6 @@ library(ggplot2)
 library(LICORS)  # for kmeans++
 library(foreach)
 library(mosaic)
-library(plyr)
 set.seed(12345)
 #cls_gap <- clusGap(fdf,FUN = kmeans, nstart = 20, K.max = 8, B = 10)
 #plot(cls_gap)
@@ -383,9 +363,13 @@ table(clust1$cluster)
 
 Following lines of code is to assess the cluster means and derive the market segments:
 
-Following are the segments we observe in the data: 1. cluster 1: Potential opportunity - They care about shopping but need to educated on health, nutrition and our product. Probably have the lowest engagement. Suggestion: Post more educational material? 2. cluster 2: Outdoorsy people who care about their health, older demographic, not parents (cash cows) 3. Cluster 3: Retired, baby boomers, empty nesters (retweet a lot?) 4. Cluster 4: Suburban parents 5. Cluster 5: Collge students. Suggestion: Target school events and hackathons to distribute product samples. Hire a sports personality to be your brand ambassaddor.
+### Segmentation results from k-means
+
+Following are the segments we observe in the data: *1. cluster 1: Potential opportunity - They care about shopping but need to educated on health, nutrition and our product. Probably have the lowest engagement. Suggestion: Post more educational material? *2. cluster 2: Outdoorsy people who care about their health, older demographic, not parents (cash cows) *3. Cluster 3: Retired, baby boomers, empty nesters (retweet a lot?) *4. Cluster 4: Suburban parents \*5. Cluster 5: Collge students. Suggestion: Target school events and hackathons to distribute product samples. Hire a sports personality to be your brand ambassaddor.
 
 The followers rarely tweet about dating. NutrientH2O should refrain from posting about that.
+
+### PCA exploration
 
 Following lines of code is to try PCA to compare to k-means
 

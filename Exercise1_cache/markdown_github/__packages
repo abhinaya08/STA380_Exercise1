@@ -1,0 +1,14 @@
+base
+dplyr
+lattice
+ggplot2
+ggstance
+ggformula
+mosaicData
+Matrix
+mosaic
+zoo
+xts
+TTR
+quantmod
+foreach
