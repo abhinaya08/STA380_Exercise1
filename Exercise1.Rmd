@@ -70,7 +70,7 @@ boxplot(Rent ~ class_a, data = green, xlab = "class_a",
 ```
 Although we agree that green buildings are a worthwhile investment, we do not entirely agree with the stats guru’s analysis. First, we decided to leave outliers with the data to observe to what extent do these outliers affect the rest of our analysis. We looked at a number of variables and decided to focus on class_a, age, leasing_rate. From our exploratory analysis, all green buildings but one had an occupancy rate above 50%, and many buildings were less than 20 years old. And since the building will be in a great part of Austin, in a location of prime real estate, we expect the building to be of a similar standard. In addition, based on the charts above, we observe there is a difference between class_a and non-class_a buildings median cost of rent, which includes outliers. Combined with this and the Rent vs. green_rating boxplot, our plots suggest that there are other significant variables that contribute to the expected rent of a building.
 
-#### Our Analysis of green or not?
+#### Our Analysis: Go green or not?
 
 The following plots are to better understand the dataset and test few of our initial hypothesis to make assumptions and then carry out our analysis.
 
@@ -82,38 +82,38 @@ green_new = green %>%
   mutate(class_1 = ifelse(class_a == 1,"a", ifelse(class_b == 1,"b","c"))) %>%
   mutate(rent_bucket = cut2(green$Rent, g=4))
 ```
-The below graph shows that Green buildings have a higher occupancy rate.
+The following graph shows that Green buildings have a higher occupancy rate.
 ```{r}
 par(mfrow = c(1,3))
 ggplot(green_new, aes(x=leasing_bucket, fill = green_rating)) + geom_bar(position = "fill") + labs(x= "% Occupancy rate",y="Relative frequency", title = "Number of green buildings across occupancy rates", fill = "Green building") + scale_fill_discrete(name = "Green Building", breaks = c(0,1), labels =c("No","Yes"))
 ```
-The below graph shows that the proportion of green buildings is highest when the building ages are between 20 to 190 years.
+The following graph shows that the proportion of green buildings is highest when the building ages are between 20 to 190 years.
 ```{r}
 ggplot(green_new, aes(x=age_bucket, fill = green_rating)) + geom_bar(position = "fill") + labs(x= "Age of building in years",y="Relative frequency", title = "Number of green buildings in age buckets ", fill = "Green building") + scale_fill_discrete(name = "Green Building", breaks = c(0,1), labels =c("No","Yes"))
 ```
-In the below plot we observe that the rent tends to be higher in the green buildings which are older.
+In the following plot we observe that the rent tends to be higher in the green buildings which are older.
 ```{r}
 ggplot(green_new, aes(x = leasing_bucket, y=Rent,fill = green_rating))+geom_col(position = "dodge")+ labs(x= "% Occupancy rate of buildings",y="Rent", title = "Rent of green buildings accross occupany rates", fill = "Green building") + scale_fill_discrete(name = "Green Building", breaks = c(0,1), labels =c("No","Yes"))
 ```
-We observe from the below plot that most of the green buildings are of class a.
+We observe from the plot below that most of the green buildings are of class a.
 ```{r}
 ggplot(green_new, aes(x= green_rating,fill = class_1)) + geom_bar(position = "fill") + labs(x= "Green rating of building",y="Relative frequency", title = "Frequency of classes across green buildings ", fill = "Building class") + scale_x_discrete(labels = c("0" ="No","1" = "Yes"))
 ```
 
-*Based on the plots, we make the following assumptions:*
-The building we are planning to invest is in a good neighbourhood where most of the buildings will be class_a (Note: we assume that class_A buildings are more likely to be in a good neighbourhood). Additionally, since our building is new, we would like to compare rents across newer buildings. 
+**Based on the plots, we make the following assumptions:**
+The building we are planning to invest is in a good neighborhood where most of the buildings will be class_a (Note: we assume that class_A buildings are more likely to be in a good neighbourhood). Additionally, since our building is new, we would like to compare rents across newer buildings. 
 
 #### Best and worst case scenario
 We observe that the rent varies across levels of occupancy and the occupany rates for green buildings tend to higher. For this analysis we propose analyzing a best case and worst case scenario to estimate the ROI.
-*Best case scenario: >90% occupancy rate*
+**Best case scenario: >90% occupancy rate**
 We consider >90% occupancy rate as the best case scenario and <30% occupancy rate as the worst. 
-*Worst case scenartio: 30%-60% occupancy rate*
+**Worst case scenario: 30%-60% occupancy rate**
 The number of green buildings below 30% occupancy rate are very old, so we consider 30%-60% occupancy rate as our worst case scenario.
 
 #### Test environment setup
 To compare the variation of rent across types of buildings, we will consider the buildings that are:
 1. Classified as class a 
-2. Aged less than 20 years
+2. Not older than 20 years
 3. Occupied more than 90% or between 30%-60% 
 This ensures we are looking at similar buildings for comparison.
 ```{r}
@@ -128,6 +128,7 @@ ggplot(green_final,aes(green_rating, fill = rent_bucket)) +  geom_bar(position =
 This plot shows the variation of rent across occupancy rate (on the secondary x axis) and age of building (on the secondary y axis). We can observe that the rent for green buildings is not higher and other factors than just the building been 'green' should be considered to decide if we should invest in the building.
 
 #### Conclusion
+Insert conclusion here
 
 ## Question 3
 
@@ -378,16 +379,16 @@ res[order(-res[,5]),5]
 
 ### Segmentation results from k-means
 Following are the segments we observe in the data:
-1. Cluster 1: *Potential opportunity*
+1. Cluster 1: **Potential opportunity**
 These followers tweet about shopping but need to educated on health, nutrition and our products. They probably have the lowest engagement among the other clusters.
 Our suggestion to get them more involved is to post educational and factual material about our products on social media.
-2. Cluster 2: *Fitness enthusiasts*
+2. Cluster 2: **Fitness enthusiasts**
 The followers' high affinity towards personal_fitness, health_nutrition and outdoors interest in sports is a clear indicator that this segment is the target audience for Nutrient H2O. They are primarily middle-aged, but not necessarily parents.
-3. Cluster 3: *Baby Boomers*
+3. Cluster 3: **Baby Boomers**
 This older demographic is characterized by a preference towards current events and shopping for home and garden supplies. They probably retweet a lot and follow our page to share the information with their kids and friends.
-4. Cluster 4: *Suburban parents*
+4. Cluster 4: **Suburban parents**
 Sports fandom, Parenting, Food, Religion, Family and School are the hallmark personality of soccer moms or suburban dads. Given the rising level of fitness among parents and their stable income, they are a good segment to market our premium products.
-5. Cluster 5: *Collge students*
+5. Cluster 5: **Collge students**
 This segment is indifferent to health and nutrition, but if we invest and get them onboard early, they may become one of our highest LTV customers.
 To market to this segment we recommend targeting school events and hackathons to distribute product samples. Additionally, hiring a popular sports personality as NutrientH2O's brand ambassaddor will drive higher engagement from this group.
 
