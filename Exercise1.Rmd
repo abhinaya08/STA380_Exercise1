@@ -12,7 +12,7 @@ knitr::opts_chunk$set(
 	warning = FALSE
 )
 ```
-Detailed Assignment questions are in 
+Detailed Assignment questions at: https://github.com/abhinaya08/STA380_Exercise1/blob/master/exercises01_questions.md
 
 
 # Question 1
@@ -234,7 +234,6 @@ library(ggplot2)
 library(LICORS)  # for kmeans++
 library(foreach)
 library(mosaic)
-library(plyr)
 set.seed(12345)
 #cls_gap <- clusGap(fdf,FUN = kmeans, nstart = 20, K.max = 8, B = 10)
 #plot(cls_gap)

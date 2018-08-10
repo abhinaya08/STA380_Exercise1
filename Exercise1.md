@@ -3,6 +3,8 @@ STA380\_Exercise1
 Abhinaya, Jui, Sherlley, Teeru
 August 7, 2018
 
+Detailed Assignment questions at: <https://github.com/abhinaya08/STA380_Exercise1/blob/master/exercises01_questions.md>
+
 Question 1
 ==========
 
@@ -124,7 +126,7 @@ set.seed(12345)
 all_returns = as.matrix(na.omit(all_returns))
 n_days = 20
 initial_wealth = 100000
-sim1 = foreach(i=1:50000, .combine='rbind') %do% {
+sim_e = foreach(i=1:50000, .combine='rbind') %do% {
   total_wealth = initial_wealth
   weights = c(0.2, 0.2, 0.2, 0.2, 0.2)
   holdings = weights * total_wealth
@@ -140,8 +142,11 @@ sim1 = foreach(i=1:50000, .combine='rbind') %do% {
 }
 
 # Calculate 5% value at risk
-even_split <- initial_wealth - quantile(sim1[,n_days], 0.05)
+initial_wealth - quantile(sim_e[,n_days], 0.05)
 ```
+
+    ##       5% 
+    ## 6128.771
 
 ### (b) Simulating for safe split
 
@@ -150,7 +155,7 @@ all_returns = as.matrix(na.omit(all_returns))
 
 n_days = 20
 initial_wealth = 100000
-sim1 = foreach(i=1:50000, .combine='rbind') %do% {
+sim_s = foreach(i=1:50000, .combine='rbind') %do% {
   total_wealth = initial_wealth
   weights = c(1/3, 1/3, 1/3, 0,0)
   holdings = weights * total_wealth
@@ -166,7 +171,7 @@ sim1 = foreach(i=1:50000, .combine='rbind') %do% {
 }
 
 # Calculate 5% value at risk
-safe_split <- initial_wealth - quantile(sim1[,n_days], 0.05)
+safe_split <- initial_wealth - quantile(sim_s[,n_days], 0.05)
 ```
 
 ### (b) Simulating for aggressive split
@@ -176,7 +181,7 @@ all_returns = as.matrix(na.omit(all_returns))
 
 n_days = 20
 initial_wealth = 100000
-sim1 = foreach(i=1:50000, .combine='rbind') %do% {
+sim_a = foreach(i=1:50000, .combine='rbind') %do% {
   total_wealth = initial_wealth
   weights = c(0, 0, 0, 0.5, 0.5)
   holdings = weights * total_wealth
@@ -192,10 +197,10 @@ sim1 = foreach(i=1:50000, .combine='rbind') %do% {
 }
 
 # Calculate 5% value at risk
-agg_split <- initial_wealth - quantile(sim1[,n_days], 0.05)
+agg_split <- initial_wealth - quantile(sim_a[,n_days], 0.05)
 ```
 
-From the simulations, we can observe that the loss for even split is `even_split`, for the safe investor is `safe_split` and for the aggresive investor is `agg_split`.
+From the simulations, we can observe that the loss for even split is $6,218, for the safe investor is $2,997 and for the aggresive investor is $12,495.
 
 Question 4
 ----------
@@ -364,7 +369,7 @@ set.seed(12345)
 clust1 = kmeans(fdf,5 , nstart=100)
 ```
 
-The SSE for this cluster is: `clust1$betweenss / clust1$totss`
+The SSE for this cluster is: `clust1$betweenss / clust1$totss` at 22%
 
 The distribution of the clusters is as follows:
 
