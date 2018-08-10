@@ -24,13 +24,42 @@ Detailed Assignment questions at: https://github.com/abhinaya08/STA380_Exercise1
 
 ![Question 1 Part B](partb_solution.jpg)
 
+The big problem would be for those who test positive of the disease. Approximately 80% of them will not have the disease. Therefore, there may have to be some retest in addition to this current test. If we were to stop at this first test calculation, this would mean many people may go under unnecessary treatment, potentially taking up resources for  others who really have the disease and need treatment.
 
 ## Question 2
 
 
 ```{r, message = FALSE}
+library(mosaic)
+library(ggplot2)
+library(dplyr)
 
+green = read.csv("greenbuildings.csv")
+
+# Subset to remove leasing outliers
+wp_outliers = green %>% 
+  filter(leasing_rate<10)
+
+par(mfrow=c(1, 2))
+
+#box plot for rent vs green_rating with and without outliers
+boxplot(Rent ~ green_rating, data = green, xlab = "green_rating",
+        ylab = "Rent", main = "Green Data")
+
+boxplot(Rent ~ green_rating, data = wo_outliers, xlab = "green_rating",
+        ylab = "Rent", main = "Green Data")
+
+#show class_a vs. rent and green_rating vs. rent
+par(mfrow=c(1, 2))
+  
+boxplot(Rent ~ green_rating, data = green, xlab = "green_rating",
+        ylab = "Rent", main = "Green Data")
+
+#box plot for rent vs green_rating
+boxplot(Rent ~ class_a, data = green, xlab = "class_a",
+        ylab = "Rent", main = "Green Data")
 ```
+Although we agree that green buildings are a worthwhile investment, we do entirely agree with the stats guru’s analysis. First, we decided to leave outliers with the data to observe to what extent do these outliers affect the rest of our analysis. We looked at a number of variables and decided to focus on class_a, age, leasing_rate. From our exploratory analysis, all green buildings but one had an occupancy rate above 50%, and many buildings were less than 20 years old. And since the building will be in a great part of Austin, in a location of prime real estate, we expect the building to be of a similar standard. In addition, based on the charts above, we observe there is a difference between class_a and non-class_a buildings median cost of rent, which includes outliers. Combined with this and the Rent vs. green_rating boxplot, our plots suggest that there are other significant variables that contribute to the expected rent of a building.    
 
 ## Question 3
 
@@ -185,7 +214,19 @@ sim_a = foreach(i=1:50000, .combine='rbind') %do% {
 # Calculate 5% value at risk
 initial_wealth - quantile(sim_a[,n_days], 0.05)
 ```
+We looked at a decade’s worth of daily data for each one of the ETFs and observed the following:
+•All the ETFs had a downturn during 2008.
+•SPY shows overall steady growth. There are some small dips in performance. However, the chart shows SPY value is on an upward trend. 
+•TLT shows growth over time
+•LDQ shows steady growth over time, similar to the SPY.
+•EEM shows growth with volatility over time. Since the downturn in 2008, EEM has more than doubled in value.  
+•VNQ shows long term growth with many sizeable dips. However, since 2008 VNQ has tripled in value.
+
+When sampling and resampling the 4-week value return, SPY, TLT, LDQ have lower variances than that of EEM and VNQ. Therefore, we chose to have an even three-way split among SPY, TLT, and LDQ for Portfolio 2, and a two-way split between EEM and VNQ for the aggressive Portfolio 3.
+
 From the simulations, we can observe that the loss for even split is $6,218, for the safe investor is $2,997 and for the aggresive investor is $12,495.
+
+We find that the opportunity for higher returns also comes with a more risk of loss. The first portfolio balances the aggressive and stable ETFs. Whereas, the second portfolio minimizes the loss by investing in stable ETFs. Lastly, the third portfolio has a chance at higher returns and risk of loss. 
 
 ## Question 4
 
