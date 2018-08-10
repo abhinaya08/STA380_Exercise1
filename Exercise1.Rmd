@@ -42,7 +42,7 @@ wp_outliers = green %>%
 
 par(mfrow=c(1, 2))
 
-#box plot for rent vs green_rating
+#box plot for rent vs green_rating with and without outliers
 boxplot(Rent ~ green_rating, data = green, xlab = "green_rating",
         ylab = "Rent", main = "Green Data")
 
