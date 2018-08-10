@@ -1,9 +1,9 @@
 STA380\_Exercise1
 ================
 Names: 
-Abhinaya Ananthakrishnan
-Jui Gupta
-Sherlley Loo
+Abhinaya Ananthakrishnan,
+Jui Gupta,
+Sherlley Loo,
 Teeru Gupta
 
 August 4, 2018
