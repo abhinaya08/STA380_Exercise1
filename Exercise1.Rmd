@@ -186,7 +186,19 @@ sim_a = foreach(i=1:50000, .combine='rbind') %do% {
 # Calculate 5% value at risk
 agg_split <- initial_wealth - quantile(sim_a[,n_days], 0.05)
 ```
+We looked at a decade’s worth of daily data for each one of the ETFs and observed the following:
+•All the ETFs had a downturn during 2008.
+•SPY shows overall steady growth. There are some small dips in performance. However, the chart shows SPY value is on an upward trend. 
+•TLT shows growth over time
+•LDQ shows steady growth over time, similar to the SPY.
+•EEM shows growth with volatility over time. Since the downturn in 2008, EEM has more than doubled in value.  
+•VNQ shows long term growth with many sizeable dips. However, since 2008 VNQ has tripled in value.
+
+When sampling and resampling the 4-week value return, SPY, TLT, LDQ have lower variances than that of EEM and VNQ. Therefore, we chose to have an even three-way split among SPY, TLT, and LDQ for Portfolio 2, and a two-way split between EEM and VNQ for the aggressive Portfolio 3.
+
 From the simulations, we can observe that the loss for even split is $6,218, for the safe investor is $2,997 and for the aggresive investor is $12,495.
+
+We find that the opportunity for higher returns also comes with a more risk of loss. The first portfolio balances the aggressive and stable ETFs. Whereas, the second portfolio minimizes the loss by investing in stable ETFs. Lastly, the third portfolio has a chance at higher returns and risk of loss. 
 
 ## Question 4
 
