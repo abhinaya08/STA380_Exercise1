@@ -156,7 +156,7 @@ sim_s = foreach(i=1:50000, .combine='rbind') %do% {
 }
 
 # Calculate 5% value at risk
-safe_split <- initial_wealth - quantile(sim_s[,n_days], 0.05)
+initial_wealth - quantile(sim_s[,n_days], 0.05)
 
 ```
 
@@ -183,7 +183,7 @@ sim_a = foreach(i=1:50000, .combine='rbind') %do% {
 }
 
 # Calculate 5% value at risk
-agg_split <- initial_wealth - quantile(sim_a[,n_days], 0.05)
+initial_wealth - quantile(sim_a[,n_days], 0.05)
 ```
 From the simulations, we can observe that the loss for even split is $6,218, for the safe investor is $2,997 and for the aggresive investor is $12,495.
 
