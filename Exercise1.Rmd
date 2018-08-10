@@ -12,8 +12,11 @@ knitr::opts_chunk$set(
 	warning = FALSE
 )
 ```
+Detailed Assignment questions are in 
+
 
 # Question 1
+
 
 ![Question 1 Part A](parta_solution.jpg)
 
@@ -22,7 +25,6 @@ knitr::opts_chunk$set(
 
 # Question 2
 
-You can also embed plots, for example:
 
 ```{r, message = FALSE}
 
@@ -31,6 +33,8 @@ You can also embed plots, for example:
 # Question 3
 
 ## Bootstrapping
+
+To allow the reader to make an intelligent decision to distribute his/her wealth, we will simulate the data.
 
 First, we select the stocks that are of interest to us from the quantmod package
 
@@ -54,10 +58,10 @@ all_returns = cbind(ClCl(SPYa),
                     ClCl(LQDa),
                     ClCl(EEMa),
                     ClCl(VNQa))
-head(all_returns)
+#head(all_returns)
 ```
 
-As we can see above, all_returns has the closing returns for the 5 stocks we want to invest in. To determine which out of these are risky and stable, we will plot their returns and check their trend
+As we can see above, all_returns has the closing returns for the 5 stocks we want to invest in. To determine which out of these are risky and stable, we will plot their returns and check their trend and standard deviation.
 
 ```{r Boots_plots, message=FALSE, warning=FALSE, paged.print=FALSE}
 #plotting since 2007 and since 2017 to compare
@@ -92,9 +96,12 @@ chartSeries(VNQa,TA='addBBands();
                     addVo()', 
                 theme="white"
                 )
+
+apply(all_returns,MARGIN = 2,sd,na.rm=T)
+apply(all_returns,MARGIN = 2,mean,na.rm=T)
 ```
 
-From the charts we can conclude that Emerging markets and Real estate exchange-traded funds have been rather unstable with higher returns
+From the charts,SD and mean of returns over the last 10 years we can conclude that Emerging markets and Real estate exchange-traded funds have been rather unstable with higher returns.
 
 ### (a) Simulating for even split
 
@@ -102,10 +109,9 @@ From the charts we can conclude that Emerging markets and Real estate exchange-t
 set.seed(12345)
 
 all_returns = as.matrix(na.omit(all_returns))
-
 n_days = 20
 initial_wealth = 100000
-sim1 = foreach(i=1:50000, .combine='rbind') %do% {
+sim_e = foreach(i=1:50000, .combine='rbind') %do% {
   total_wealth = initial_wealth
   weights = c(0.2, 0.2, 0.2, 0.2, 0.2)
   holdings = weights * total_wealth
@@ -121,7 +127,7 @@ sim1 = foreach(i=1:50000, .combine='rbind') %do% {
 }
 
 # Calculate 5% value at risk
-quantile(sim1[,n_days], 0.05) - initial_wealth
+initial_wealth - quantile(sim_e[,n_days], 0.05)
 
 ```
 
@@ -132,7 +138,7 @@ all_returns = as.matrix(na.omit(all_returns))
 
 n_days = 20
 initial_wealth = 100000
-sim1 = foreach(i=1:50000, .combine='rbind') %do% {
+sim_s = foreach(i=1:50000, .combine='rbind') %do% {
   total_wealth = initial_wealth
   weights = c(1/3, 1/3, 1/3, 0,0)
   holdings = weights * total_wealth
@@ -148,7 +154,7 @@ sim1 = foreach(i=1:50000, .combine='rbind') %do% {
 }
 
 # Calculate 5% value at risk
-quantile(sim1[,n_days], 0.05) - initial_wealth
+safe_split <- initial_wealth - quantile(sim_s[,n_days], 0.05)
 
 ```
 
@@ -159,7 +165,7 @@ all_returns = as.matrix(na.omit(all_returns))
 
 n_days = 20
 initial_wealth = 100000
-sim1 = foreach(i=1:50000, .combine='rbind') %do% {
+sim_a = foreach(i=1:50000, .combine='rbind') %do% {
   total_wealth = initial_wealth
   weights = c(0, 0, 0, 0.5, 0.5)
   holdings = weights * total_wealth
@@ -175,19 +181,18 @@ sim1 = foreach(i=1:50000, .combine='rbind') %do% {
 }
 
 # Calculate 5% value at risk
-quantile(sim1[,n_days], 0.05) - initial_wealth
-
+agg_split <- initial_wealth - quantile(sim_a[,n_days], 0.05)
 ```
+From the simulations, we can observe that the loss for even split is $6,218, for the safe investor is $2,997 and for the aggresive investor is $12,495.
+
 ## Question 4
 
-Identify the market segment that tweets about NutrientH2O
+Identify the market segment that tweets about NutrientH2O?
 
 First we are analyzing the dataset and looking at the various distributions and correlations
 ```{r, message = FALSE}
 
 df <- read.csv("social_marketing.csv")
-names(df)
-head(df)
 summary(df)
 
 ```
@@ -201,31 +206,24 @@ sort(colMeans(df[-1]),decreasing = TRUE)
 
 #Distribution of tweets into categories
 x = sort((colSums(df[-1])/sum(colSums(df[,-1])))*100,decreasing = TRUE)
-barplot(x)
+barplot(x, las=2, ylab = "% of total tweets", main = "Distribution of tweets into categories", col = "skyblue",cex.names = 0.75)
+#text(x=midpts, y=-2, names(x), cex=0.8, srt=45, xpd=TRUE)
 ```
 As expected, most of the tweets are chatter, followed by photo_sharing and health_nutrition. Maybe by cleaning the dataset and excluding the chatter, photo_sharing, spam and adult taggings, the popular categories would change
 
-Also to note that most of the tweets are categorized into photo_sharing (6%) and health_nutrition (6%)
-```{r}
-df2 <- cbind(df, total = rowSums(df[,-1]))
-df2[(df2$chatter + df2$spam + df2$adult) == df2$total,]
-
-```
-No turk has rated a tweet as only chatter, spam or adult. This means we can exclude these columns for our segmentation exercise
+Now we are excluding the noisy columns and trying to build clusters to segment the audience.
 
 ```{r}
 #excluding chatter,photo_sharing, spam, adult and turks for segmentation
 exclude <- c("X","chatter","uncategorized","spam","adult","photo_sharing")
 clean_df <- df[,!names(df) %in% exclude]
-colMeans(clean_df)
 
 #normalizing the data for creating better clusters, since there are so many outliers
-#normalize <- function(x){(x-min(x))/(max(x)-min(x))}
+normalize <- function(x){(x-min(x))/(max(x)-min(x))}
 
 #creating fdf = final dataframe
-#fdf <- apply(clean_df,2,FUN=normalize) 
-fdf <-  scale(clean_df,center = TRUE, scale = TRUE)
-head(fdf)
+fdf <- apply(clean_df,2,FUN=normalize) 
+#fdf <-  scale(clean_df,center = TRUE, scale = TRUE)
 ```
 
 
@@ -237,41 +235,55 @@ library(LICORS)  # for kmeans++
 library(foreach)
 library(mosaic)
 library(plyr)
-
+set.seed(12345)
 #cls_gap <- clusGap(fdf,FUN = kmeans, nstart = 20, K.max = 8, B = 10)
 #plot(cls_gap)
 #, main = "clusGap(<iid_rnorm_p=3>)  ==> k = 1  cluster is optimal")
 
 # Run k-means with 6 clusters and 25 starts
-clust1 = kmeans(fdf, 5, nstart=100)
-clust1$betweenss / clust1$totss #22% error
+clust1 = kmeans(fdf,5 , nstart=100)
+```
+
+The SSE for this cluster is: `clust1$betweenss / clust1$totss` at 22%
+
+The distribution of the clusters is as follows:
+```{r}
+table(clust1$cluster)
+```
+
+Following lines of code is to assess the cluster means and derive the market segments:
+```{r include=FALSE}
 res <- t(clust1$centers)
 res[order(-res[,1]),1]
 res[order(-res[,2]),2]
 res[order(-res[,3]),3]
 res[order(-res[,4]),4]
 res[order(-res[,5]),5]
-qplot(health_nutrition, personal_fitness, data=clean_df, color=factor(clust1$cluster))
-qplot(religion, politics, data=clean_df, color=factor(clust1$cluster))
-qplot(current_events, shopping, data=clean_df, color=factor(clust1$cluster))
+```
 
-qplot(food, parenting, data=clean_df, color=factor(clust1$cluster))
+Following are the segments we observe in the data:
+1. cluster 1: Potential opportunity - They care about shopping but need to educated on health, nutrition and our product. Probably have the lowest engagement. Suggestion: Post more educational material? 
+2. cluster 2: Outdoorsy people who care about their health, older demographic, not parents (cash cows)
+3. Cluster 3: Retired, baby boomers, empty nesters (retweet a lot?) 
+4. Cluster 4: Suburban parents 
+5. Cluster 5: Collge students. Suggestion: Target school events and hackathons to distribute product samples. Hire a sports personality to be your brand ambassaddor.
 
-# Using kmeans++ initialization
-#clust2 = kmeanspp(fdf, k=6, nstart=25)
-#qplot(health_nutrition, photo_sharing, data=clean_df, color=factor(clust2$cluster))
-#qplot(health_nutrition, cooking, data=clean_df, color=factor(clust2$cluster))
-#qplot(politics, cooking, data=clean_df, color=factor(clust2$cluster))
 
+The followers rarely tweet about dating. NutrientH2O should refrain from posting about that.
+
+
+Following lines of code is to try PCA to compare to k-means
+```{r}
+#PCA
+
+txpca = prcomp(fdf, scale=FALSE, rank=14)
+summary(txpca)
+tx_scores = predict(txpca)  # same as fxpca$x
+barplot(txpca$rotation[,1], las=2,cex.names = 0.75)
 
 ```
 
-
-
-
-
-
-
+PCA reinforces our segments from clustering. The barplot above shows that current events, sports, food and shopping are popular while dating is unpopular among the followers of NutrientH2O on Twitter.
 
 
 
