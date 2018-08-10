@@ -1,6 +1,11 @@
 STA380\_Exercise1
 ================
-JAST & Associates
+Names: 
+Abhinaya Ananthakrishnan
+Jui Gupta
+Sherlley Loo
+Teeru Gupta
+
 August 4, 2018
 
 Detailed Assignment questions at: <https://github.com/abhinaya08/STA380_Exercise1/blob/master/exercises01_questions.md>
@@ -462,7 +467,7 @@ Following are the segments we observe in the data: <br>
 
 4.  Cluster 4: **Suburban parents** - Sports fandom, Parenting, Food, Religion, Family and School are the hallmark personality of soccer moms or suburban dads. Given the rising level of fitness among parents and their stable income, they are a good segment to market our premium products.
 
-5.  Cluster 5: **Collge students** - This segment is indifferent to health and nutrition, but if we invest and get them onboard early, they may become one of our highest LTV customers. To market to this segment we recommend targeting school events and hackathons to distribute product samples. Additionally, hiring a popular sports personality as NutrientH2O's brand ambassaddor will drive higher engagement from this group.
+5.  Cluster 5: **College students** - This segment is indifferent to health and nutrition, but if we invest and get them onboard early, they may become one of our highest LTV customers. To market to this segment we recommend targeting school events and hackathons to distribute product samples. Additionally, hiring a popular sports personality as NutrientH2O's brand ambassaddor will drive higher engagement from this group.
 
 *We also observe that the followers rarely tweet about dating. NutrientH2O should refrain from posting about that.*
 
