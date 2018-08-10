@@ -115,7 +115,9 @@ green_final = green_new %>%
 ggplot(green_final,aes(green_rating, fill = rent_bucket)) +  geom_bar(position = "stack") + facet_grid(age_bucket ~ leasing_bucket, scales = "free") + scale_x_discrete("Rating of green building", labels = c("0" ="No","1" = "Yes")) +  labs(title = "Variation in green buildings across rent and occupancy rate", y ="Count", fill = "Rent buckets") 
 ```
 
-![](Exercise1_files/figure-markdown_github/unnamed-chunk-7-1.png) This plot shows the variation of rent across occupancy rate (on the secondary x axis) and age of building (on the secondary y axis). We can observe that the rent for green buildings is not higher and other factors than just the building been 'green' should be considered to decide if we should invest in the building.
+![](Exercise1_files/figure-markdown_github/unnamed-chunk-7-1.png)
+
+This plot shows the variation of rent across occupancy rate (on the secondary x axis) and age of building (on the secondary y axis). We can observe that the rent for green buildings is not higher and other factors than just the building been 'green' should be considered to decide if we should invest in the building.
 
 #### Conclusion
 
@@ -319,8 +321,19 @@ initial_wealth - quantile(sim_a[,n_days], 0.05)
     ##       5% 
     ## 12523.32
 
-We looked at a decade’s worth of daily data for each one of the ETFs and observed the following: - All the ETFs had a downturn during 2008. - SPY shows overall steady growth. There are some small dips in performance. However, the chart shows SPY value is on an upward trend. - TLT shows growth over time - LDQ shows steady growth over time, similar to the SPY. - EEM shows growth with volatility over time. Since the downturn in 2008, EEM has more than doubled in value.
-- VNQ shows long term growth with many sizeable dips. However, since 2008 VNQ has tripled in value.
+We looked at a decade’s worth of daily data for each one of the ETFs and observed the following:
+
+-   All the ETFs had a downturn during 2008 <br>
+
+-   SPY shows overall steady growth. There are some small dips in performance. However, the chart shows SPY value is on an upward trend <br>
+
+-   TLT shows growth over time <br>
+
+-   LDQ shows steady growth over time, similar to the SPY <br>
+
+-   EEM shows growth with volatility over time. Since the downturn in 2008, EEM has more than doubled in value <br>
+
+-   VNQ shows long term growth with many sizeable dips. However, since 2008 VNQ has tripled in value <br>
 
 When sampling and resampling the 4-week value return, SPY, TLT, LDQ have lower variances than that of EEM and VNQ. Therefore, we chose to have an even three-way split among SPY, TLT, and LDQ for Portfolio 2, and a two-way split between EEM and VNQ for the aggressive Portfolio 3.
 
@@ -405,9 +418,19 @@ Following lines of code is to assess the cluster means and derive the market seg
 
 ### Segmentation results from k-means
 
-Following are the segments we observe in the data: 1. Cluster 1: **Potential opportunity** These followers tweet about shopping but need to educated on health, nutrition and our products. They probably have the lowest engagement among the other clusters. Our suggestion to get them more involved is to post educational and factual material about our products on social media. 2. Cluster 2: **Fitness enthusiasts** The followers' high affinity towards personal\_fitness, health\_nutrition and outdoors interest in sports is a clear indicator that this segment is the target audience for Nutrient H2O. They are primarily middle-aged, but not necessarily parents. 3. Cluster 3: **Baby Boomers** This older demographic is characterized by a preference towards current events and shopping for home and garden supplies. They probably retweet a lot and follow our page to share the information with their kids and friends. 4. Cluster 4: **Suburban parents** Sports fandom, Parenting, Food, Religion, Family and School are the hallmark personality of soccer moms or suburban dads. Given the rising level of fitness among parents and their stable income, they are a good segment to market our premium products. 5. Cluster 5: **Collge students** This segment is indifferent to health and nutrition, but if we invest and get them onboard early, they may become one of our highest LTV customers. To market to this segment we recommend targeting school events and hackathons to distribute product samples. Additionally, hiring a popular sports personality as NutrientH2O's brand ambassaddor will drive higher engagement from this group.
+Following are the segments we observe in the data: <br>
 
-*We can also observe that across the board, the followers rarely tweet about dating. NutrientH2O should refrain from posting about that.*
+1.  Cluster 1: **Potential opportunity** - These followers tweet about shopping but need to educated on health, nutrition and our products. They probably have the lowest engagement among the other clusters. Our suggestion to get them more involved is to post educational and factual material about our products on social media.
+
+2.  Cluster 2: **Fitness enthusiasts** - High affinity towards personal\_fitness, health\_nutrition and outdoors interest in sports is a clear indicator that this segment is the target audience for Nutrient H2O. They are primarily middle-aged, but not necessarily parents.
+
+3.  Cluster 3: **Baby Boomers** - This older demographic is characterized by a preference towards current events and shopping for home and garden supplies. They probably retweet a lot and follow our page to share the information with their kids and friends.
+
+4.  Cluster 4: **Suburban parents** - Sports fandom, Parenting, Food, Religion, Family and School are the hallmark personality of soccer moms or suburban dads. Given the rising level of fitness among parents and their stable income, they are a good segment to market our premium products.
+
+5.  Cluster 5: **Collge students** - This segment is indifferent to health and nutrition, but if we invest and get them onboard early, they may become one of our highest LTV customers. To market to this segment we recommend targeting school events and hackathons to distribute product samples. Additionally, hiring a popular sports personality as NutrientH2O's brand ambassaddor will drive higher engagement from this group.
+
+*We also observe that the followers rarely tweet about dating. NutrientH2O should refrain from posting about that.*
 
 ### PCA exploration
 
