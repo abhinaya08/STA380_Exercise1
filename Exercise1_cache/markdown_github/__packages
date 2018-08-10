@@ -12,3 +12,10 @@ xts
 TTR
 quantmod
 foreach
+ggcorrplot
+GGally
+survival
+Formula
+Hmisc
+LICORS
+bindrcpp

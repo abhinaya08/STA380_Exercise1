@@ -2,9 +2,7 @@
 title: "STA380_Exercise1"
 author: "JAST & Associates"
 date: "August 4, 2018"
-output:
-  md_document:
-    variant: markdown_github
+output: github_document
 ---
 
 ```{r setup, include=FALSE}
@@ -121,8 +119,7 @@ green_final = green_new %>%
   filter(leasing_bucket == "90-100"|leasing_bucket == "30-60") %>%
   filter(class_a ==1) %>%
   filter(age_bucket == "0-9"|age_bucket == "10-20")
-```
-```{r}
+
 ggplot(green_final,aes(green_rating, fill = rent_bucket)) +  geom_bar(position = "stack") + facet_grid(age_bucket ~ leasing_bucket, scales = "free") + scale_x_discrete("Rating of green building", labels = c("0" ="No","1" = "Yes")) +  labs(title = "Variation in green buildings across rent and occupancy rate", y ="Count", fill = "Rent buckets") 
 ```
 This plot shows the variation of rent across occupancy rate (on the secondary x axis) and age of building (on the secondary y axis). We can observe that the rent for green buildings is not higher and other factors than just the building been 'green' should be considered to decide if we should invest in the building.
