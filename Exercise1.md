@@ -78,19 +78,25 @@ par(mfrow = c(1,3))
 ggplot(green_new, aes(x=leasing_bucket, fill = green_rating)) + geom_bar(position = "fill") + labs(x= "% Occupancy rate",y="Relative frequency", title = "Number of green buildings across occupancy rates", fill = "Green building") + scale_fill_discrete(name = "Green Building", breaks = c(0,1), labels =c("No","Yes"))
 ```
 
-![](Exercise1_files/figure-markdown_github/unnamed-chunk-3-1.png) The following graph shows that the proportion of green buildings is highest when the building ages are between 20 to 190 years.
+![](Exercise1_files/figure-markdown_github/unnamed-chunk-3-1.png)
+
+The following graph shows that the proportion of green buildings is highest when the building ages are between 20 to 190 years.
 
 ``` r
 ggplot(green_new, aes(x=age_bucket, fill = green_rating)) + geom_bar(position = "fill") + labs(x= "Age of building in years",y="Relative frequency", title = "Number of green buildings in age buckets ", fill = "Green building") + scale_fill_discrete(name = "Green Building", breaks = c(0,1), labels =c("No","Yes"))
 ```
 
-![](Exercise1_files/figure-markdown_github/unnamed-chunk-4-1.png) In the following plot we observe that the rent tends to be higher in the green buildings which are older.
+![](Exercise1_files/figure-markdown_github/unnamed-chunk-4-1.png)
+
+In the following plot we observe that the rent tends to be higher in the green buildings which are older.
 
 ``` r
 ggplot(green_new, aes(x = leasing_bucket, y=Rent,fill = green_rating))+geom_col(position = "dodge")+ labs(x= "% Occupancy rate of buildings",y="Rent", title = "Rent of green buildings accross occupany rates", fill = "Green building") + scale_fill_discrete(name = "Green Building", breaks = c(0,1), labels =c("No","Yes"))
 ```
 
-![](Exercise1_files/figure-markdown_github/unnamed-chunk-5-1.png) We observe from the plot below that most of the green buildings are of class a.
+![](Exercise1_files/figure-markdown_github/unnamed-chunk-5-1.png)
+
+We observe from the plot below that most of the green buildings are of class a.
 
 ``` r
 ggplot(green_new, aes(x= green_rating,fill = class_1)) + geom_bar(position = "fill") + labs(x= "Green rating of building",y="Relative frequency", title = "Frequency of classes across green buildings ", fill = "Building class") + scale_x_discrete(labels = c("0" ="No","1" = "Yes"))
@@ -129,11 +135,27 @@ ggplot(green_final,aes(green_rating, fill = rent_bucket)) +  geom_bar(position =
 
 ![](Exercise1_files/figure-markdown_github/unnamed-chunk-7-1.png)
 
-This plot shows the variation of rent across occupancy rate (on the secondary x axis) and age of building (on the secondary y axis). We can observe that the rent for green buildings is not higher and other factors than just the green rating shouldnt be considered to decide if we should invest in the building.
+By comparing the number of buildings in a 2x2 of *Age of the building* and *Leasing buckets* we observe that for green vs. non-green, the distribution of buildings across rent buckets isn't
 
 #### Conclusion
 
-Insert conclusion here
+To conclude, by taking a closer look at the table below we can observe that, the avg rent for green buildings is lower than the non-green buildings in the test environment that we created.
+
+Although, the rent as a measure of return is not favorable for construction of a green building, there are other intangible benefits such as environmental factors, company brand and goodwill that will lead to higher ROI in the long term.
+
+``` r
+aggregate(Rent~ green_rating+ leasing_bucket + age_bucket, data= green_final, FUN = mean)
+```
+
+    ##   green_rating leasing_bucket age_bucket     Rent
+    ## 1            0          30-60        0-9 34.63808
+    ## 2            1          30-60        0-9 28.24400
+    ## 3            0         90-100        0-9 31.59143
+    ## 4            1         90-100        0-9 29.41746
+    ## 5            0          30-60      10-20 27.45888
+    ## 6            1          30-60      10-20 27.32000
+    ## 7            0         90-100      10-20 35.45186
+    ## 8            1         90-100      10-20 32.91532
 
 Question 3
 ----------
@@ -222,14 +244,14 @@ apply(all_returns,MARGIN = 2,sd,na.rm=T)
 ```
 
     ##   ClCl.SPYa   ClCl.TLTa   ClCl.LQDa   ClCl.EEMa   ClCl.VNQa 
-    ## 0.012448436 0.009156927 0.005219542 0.040240709 0.021156843
+    ## 0.012448436 0.009156927 0.005219542 0.040240709 0.021159767
 
 ``` r
 apply(all_returns,MARGIN = 2,mean,na.rm=T)
 ```
 
     ##    ClCl.SPYa    ClCl.TLTa    ClCl.LQDa    ClCl.EEMa    ClCl.VNQa 
-    ## 0.0003983176 0.0002737537 0.0002067942 0.0009971055 0.0004147192
+    ## 0.0003983176 0.0002737537 0.0002067942 0.0009971055 0.0004095163
 
 From the charts,SD and mean of returns over the last 10 years we can conclude that Emerging markets and Real estate exchange-traded funds have been rather unstable with higher returns (risky) while the others are stable.
 
@@ -375,7 +397,7 @@ x = sort((colSums(df[-1])/sum(colSums(df[,-1])))*100,decreasing = TRUE)
 barplot(x, las=2, ylab = "% of total tweets", main = "Distribution of tweets into categories", col = "skyblue",cex.names = 0.75)
 ```
 
-![](Exercise1_files/figure-markdown_github/unnamed-chunk-12-1.png)
+![](Exercise1_files/figure-markdown_github/unnamed-chunk-13-1.png)
 
 ``` r
 #text(x=midpts, y=-2, names(x), cex=0.8, srt=45, xpd=TRUE)
@@ -474,6 +496,6 @@ tx_scores = predict(txpca)  # same as fxpca$x
 barplot(txpca$rotation[,1], las=2,cex.names = 0.75)
 ```
 
-![](Exercise1_files/figure-markdown_github/unnamed-chunk-16-1.png)
+![](Exercise1_files/figure-markdown_github/unnamed-chunk-17-1.png)
 
 PCA reinforces our segments from clustering. The barplot above shows that current events, sports, food and shopping are popular while dating is unpopular among the followers of NutrientH2O on Twitter. Although PCA identifies 15 different segments (or directions), there is an overlap between the directions. K-means does a better job at summarizing the segments without penalizing the accuracy abundantly.

@@ -81,19 +81,23 @@ green_new = green %>%
   mutate(class_1 = ifelse(class_a == 1,"a", ifelse(class_b == 1,"b","c"))) %>%
   mutate(rent_bucket = cut2(green$Rent, g=4))
 ```
+
 The following graph shows that Green buildings have a higher occupancy rate.
 ```{r}
 par(mfrow = c(1,3))
 ggplot(green_new, aes(x=leasing_bucket, fill = green_rating)) + geom_bar(position = "fill") + labs(x= "% Occupancy rate",y="Relative frequency", title = "Number of green buildings across occupancy rates", fill = "Green building") + scale_fill_discrete(name = "Green Building", breaks = c(0,1), labels =c("No","Yes"))
 ```
+
 The following graph shows that the proportion of green buildings is highest when the building ages are between 20 to 190 years.
 ```{r}
 ggplot(green_new, aes(x=age_bucket, fill = green_rating)) + geom_bar(position = "fill") + labs(x= "Age of building in years",y="Relative frequency", title = "Number of green buildings in age buckets ", fill = "Green building") + scale_fill_discrete(name = "Green Building", breaks = c(0,1), labels =c("No","Yes"))
 ```
+
 In the following plot we observe that the rent tends to be higher in the green buildings which are older.
 ```{r}
 ggplot(green_new, aes(x = leasing_bucket, y=Rent,fill = green_rating))+geom_col(position = "dodge")+ labs(x= "% Occupancy rate of buildings",y="Rent", title = "Rent of green buildings accross occupany rates", fill = "Green building") + scale_fill_discrete(name = "Green Building", breaks = c(0,1), labels =c("No","Yes"))
 ```
+
 We observe from the plot below that most of the green buildings are of class a.
 ```{r}
 ggplot(green_new, aes(x= green_rating,fill = class_1)) + geom_bar(position = "fill") + labs(x= "Green rating of building",y="Relative frequency", title = "Frequency of classes across green buildings ", fill = "Building class") + scale_x_discrete(labels = c("0" ="No","1" = "Yes"))
@@ -129,10 +133,21 @@ green_final = green_new %>%
 ggplot(green_final,aes(green_rating, fill = rent_bucket)) +  geom_bar(position = "stack") + facet_grid(age_bucket ~ leasing_bucket, scales = "free") + scale_x_discrete("Rating of green building", labels = c("0" ="No","1" = "Yes")) +  labs(title = "Variation in green buildings across rent and occupancy rate", y ="Number of buildings", fill = "Rent buckets") 
 ```
 
-This plot shows the variation of rent across occupancy rate (on the secondary x axis) and age of building (on the secondary y axis). We can observe that the rent for green buildings is not higher and other factors than just the green rating shouldnt be considered to decide if we should invest in the building.
+By comparing the number of buildings in a 2x2 of _Age of the building_ and _Leasing buckets_ we observe that for green vs. non-green, the distribution of buildings across rent buckets isn't
+
 
 #### Conclusion
-Insert conclusion here
+
+To conclude, by taking a closer look at the table below we can observe that, the avg rent for green buildings is lower than the non-green buildings in the test environment that we created. 
+
+Although, the rent as a measure of return is not favorable for construction of a green building, there are other intangible benefits such as environmental factors, company brand and goodwill that will lead to higher ROI in the long term. 
+
+
+```{r}
+aggregate(Rent~ green_rating+ leasing_bucket + age_bucket, data= green_final, FUN = mean)
+```
+
+
 
 ## Question 3
 
