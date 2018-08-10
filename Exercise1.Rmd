@@ -59,6 +59,7 @@ boxplot(Rent ~ green_rating, data = green, xlab = "green_rating",
 boxplot(Rent ~ class_a, data = green, xlab = "class_a",
         ylab = "Rent", main = "Green Data")
 ```
+Although we agree that green buildings are a worthwhile investment, we do entirely agree with the stats guru’s analysis. First, we decided to leave outliers with the data to observe to what extent do these outliers affect the rest of our analysis. We looked at a number of variables and decided to focus on class_a, age, leasing_rate. From our exploratory analysis, all green buildings but one had an occupancy rate above 50%, and many buildings were less than 20 years old. And since the building will be in a great part of Austin, in a location of prime real estate, we expect the building to be of a similar standard. In addition, based on the charts above, we observe there is a difference between class_a and non-class_a buildings median cost of rent, which includes outliers. Combined with this and the Rent vs. green_rating boxplot, our plots suggest that there are other significant variables that contribute to the expected rent of a building.    
 
 ## Question 3
 
