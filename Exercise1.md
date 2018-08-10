@@ -135,13 +135,13 @@ ggplot(green_final,aes(green_rating, fill = rent_bucket)) +  geom_bar(position =
 
 ![](Exercise1_files/figure-markdown_github/unnamed-chunk-7-1.png)
 
-By comparing the number of buildings in a 2x2 of *Age of the building* and *Leasing buckets* we observe that for green vs. non-green, the distribution of buildings across rent buckets isn't
+By comparing the number of buildings in a 2x2 of *Age of the building* and *Leasing buckets* we observe that for green vs. non-green, the distribution of buildings across rent buckets isn't normally distributed.
 
 #### Conclusion
 
-To conclude, by taking a closer look at the table below we can observe that, the avg rent for green buildings is lower than the non-green buildings in the test environment that we created.
+To conclude, looking at the table below, we can observe that the average rent for green buildings is lower than that of non-green buildings in the test environment that we created.
 
-Although, the rent as a measure of return is not favorable for construction of a green building, there are other intangible benefits such as environmental factors, company brand and goodwill that will lead to higher ROI in the long term.
+Although, the data does not show rent as a most favorable measure of return for construction of a green building, there are other intangible benefits such as environmental factors, company brand and goodwill that will likely lead to higher ROI in the long term.
 
 ``` r
 aggregate(Rent~ green_rating+ leasing_bucket + age_bucket, data= green_final, FUN = mean)
@@ -253,7 +253,7 @@ apply(all_returns,MARGIN = 2,mean,na.rm=T)
     ##    ClCl.SPYa    ClCl.TLTa    ClCl.LQDa    ClCl.EEMa    ClCl.VNQa 
     ## 0.0003983176 0.0002737537 0.0002067942 0.0009971055 0.0004095163
 
-From the charts,SD and mean of returns over the last 10 years we can conclude that Emerging markets and Real estate exchange-traded funds have been rather unstable with higher returns (risky) while the others are stable.
+From the charts, SD and mean of returns over the last 10 years we can conclude that Emerging markets and Real estate exchange-traded funds have been rather unstable with higher returns (risky) while the others are stable.
 
 ### (a) Simulating for even split
 
@@ -498,4 +498,4 @@ barplot(txpca$rotation[,1], las=2,cex.names = 0.75)
 
 ![](Exercise1_files/figure-markdown_github/unnamed-chunk-17-1.png)
 
-PCA reinforces our segments from clustering. The barplot above shows that current events, sports, food and shopping are popular while dating is unpopular among the followers of NutrientH2O on Twitter. Although PCA identifies 15 different segments (or directions), there is an overlap between the directions. K-means does a better job at summarizing the segments without penalizing the accuracy abundantly.
+PCA reinforces our results shown from clustering. The barplot above shows that current events, sports, food and shopping are popular while dating is unpopular among the followers of NutrientH2O on Twitter. Although PCA identifies 15 different segments (or directions), there is an overlap between the directions. K-means does a better job at summarizing the segments without penalizing the accuracy abundantly.
