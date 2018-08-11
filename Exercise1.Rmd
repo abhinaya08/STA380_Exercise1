@@ -1,6 +1,6 @@
 ---
 title: "STA380_Exercise1"
-author: "JAST & Associates"
+author: "Abhinaya Ananthakrishnan, Jui Gupta, Sherlley Loo, Teeru Gupta"
 date: "August 4, 2018"
 output: github_document
 ---
@@ -133,18 +133,25 @@ green_final = green_new %>%
 ggplot(green_final,aes(green_rating, fill = rent_bucket)) +  geom_bar(position = "stack") + facet_grid(age_bucket ~ leasing_bucket, scales = "free") + scale_x_discrete("Rating of green building", labels = c("0" ="No","1" = "Yes")) +  labs(title = "Variation in green buildings across rent and occupancy rate", y ="Number of buildings", fill = "Rent buckets") 
 ```
 
-By comparing the number of buildings in a 2x2 of _Age of the building_ and _Leasing buckets_ we observe that for green vs. non-green, the distribution of buildings across rent buckets isn't
+By comparing the number of buildings in a 2x2 of _Age of the building_ and _Leasing buckets_ we observe that for green vs. non-green, the distribution of buildings across rent buckets isn't normally distributed.
 
 
 #### Conclusion
 
-To conclude, by taking a closer look at the table below we can observe that, the avg rent for green buildings is lower than the non-green buildings in the test environment that we created. 
-
-Although, the rent as a measure of return is not favorable for construction of a green building, there are other intangible benefits such as environmental factors, company brand and goodwill that will lead to higher ROI in the long term. 
+To conclude, looking at the table below, we can observe thataverage rent for green buildings is lower than that of non-green buildings in the test environment that we created.
 
 
 ```{r}
 aggregate(Rent~ green_rating+ leasing_bucket + age_bucket, data= green_final, FUN = mean)
+```
+
+
+Although, the data does not show rent as a most favorable measure of return for construction of a green building, there are other intangible benefits such as environmental factors, company brand and goodwill that will likely lead to higher ROI in the long term. For example, when we compare the total degree days (a measure of energy used by the buildings), we can observe that green buildings consume lower power as compared to non green-buildings.
+
+```{r}
+
+aggregate(total_dd_07~ green_rating+ leasing_bucket + age_bucket, data= green_final, FUN = mean)
+
 ```
 
 
@@ -216,7 +223,7 @@ apply(all_returns,MARGIN = 2,sd,na.rm=T)
 apply(all_returns,MARGIN = 2,mean,na.rm=T)
 ```
 
-From the charts,SD and mean of returns over the last 10 years we can conclude that Emerging markets and Real estate exchange-traded funds have been rather unstable with higher returns (risky) while the others are stable.
+From the charts, SD and mean of returns over the last 10 years we can conclude that Emerging markets and Real estate exchange-traded funds have been rather unstable with higher returns (risky) while the others are stable.
 
 ### (a) Simulating for even split
 
@@ -392,7 +399,7 @@ table(clust1$cluster)
 ```
 
 Following lines of code is to assess the cluster means and derive the market segments:
-```{r message=FALSE, warning=FALSE, include=FALSE, paged.print=FALSE}
+```{r echo=TRUE, message=FALSE, warning=FALSE, paged.print=FALSE, results="hide"}
 res <- t(clust1$centers)
 res[order(-res[,1]),1]
 res[order(-res[,2]),2]
@@ -418,7 +425,7 @@ This older demographic is characterized by a preference towards current events a
 4. Cluster 4: **Suburban parents** - 
 Sports fandom, Parenting, Food, Religion, Family and School are the hallmark personality of soccer moms or suburban dads. Given the rising level of fitness among parents and their stable income, they are a good segment to market our premium products.
 
-5. Cluster 5: **Collge students** - 
+5. Cluster 5: **College students** - 
 This segment is indifferent to health and nutrition, but if we invest and get them onboard early, they may become one of our highest LTV customers.
 To market to this segment we recommend targeting school events and hackathons to distribute product samples. Additionally, hiring a popular sports personality as NutrientH2O's brand ambassaddor will drive higher engagement from this group.
 
@@ -436,8 +443,7 @@ barplot(txpca$rotation[,1], las=2,cex.names = 0.75)
 
 ```
 
-PCA reinforces our segments from clustering. The barplot above shows that current events, sports, food and shopping are popular while dating is unpopular among the followers of NutrientH2O on Twitter. Although PCA identifies 15 different segments (or directions), there is an overlap between the directions. K-means does a better job at summarizing the segments without penalizing the accuracy abundantly.
-
+PCA reinforces our results from clustering. The barplot above shows that current events, sports, food and shopping are popular while dating is unpopular among the followers of NutrientH2O on Twitter. Although PCA identifies 15 different segments (or directions), there is an overlap between the directions. K-means does a better job at summarizing the segments without penalizing the accuracy abundantly.
 
 
 
